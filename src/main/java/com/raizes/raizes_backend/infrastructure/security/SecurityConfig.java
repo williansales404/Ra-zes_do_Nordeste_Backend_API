@@ -38,9 +38,18 @@ public class SecurityConfig {
             .csrf().disable()
             .authorizeHttpRequests(auth -> auth
                 // Endpoints públicos
-                .requestMatchers("/auth/**", "/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**",
-                 "/unidades", "/unidades/**", "/produtos", "/produtos/**", 
-                 "/cardapio").permitAll()
+                .requestMatchers(
+                        "/auth/**",
+                        "/h2-console/**",
+                        "/swagger-ui/**",
+                         "/swagger-ui.html", 
+                        "/v3/api-docs/**",
+                        "/unidades",
+                        "/unidades/**",
+                        "/produtos",
+                        "/produtos/**",
+                        "/cardapio"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

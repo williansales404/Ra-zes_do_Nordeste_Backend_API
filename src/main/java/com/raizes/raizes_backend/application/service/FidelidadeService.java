@@ -37,4 +37,11 @@ public class FidelidadeService {
         usuarioRepository.save(cliente);
         return desconto;
     }
+    
+    @Transactional
+    public void acumularPontos(Long clienteId, Integer pontos) {
+        Cliente cliente = (Cliente) usuarioService.buscarPorId(clienteId);
+        cliente.setPontos(cliente.getPontos() + pontos);
+        usuarioRepository.save(cliente);
+    }
 }

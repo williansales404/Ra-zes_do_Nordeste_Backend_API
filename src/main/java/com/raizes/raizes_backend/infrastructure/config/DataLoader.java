@@ -97,5 +97,30 @@ public class DataLoader implements CommandLineRunner{
                 estoqueRepository.save(e);
             }
         }
+        
+        // Criar cozinha
+        if (usuarioRepository.findByEmail("cozinha@raizes.com").isEmpty()) {
+            Cozinha cozinha = new Cozinha();
+            cozinha.setNome("Cozinha Padrão");
+            cozinha.setEmail("cozinha@raizes.com");
+            cozinha.setSenha(passwordEncoder.encode("123456"));
+            cozinha.setTelefone("81999998888");
+            cozinha.setTipo(TipoUsuario.COZINHA);
+            cozinha.setDataCadastro(LocalDateTime.now());
+            cozinha.setAtivo(true);
+            usuarioRepository.save(cozinha);
+        }
+        // Criar atendente
+        if (usuarioRepository.findByEmail("atendente@raizes.com").isEmpty()) {
+            Atendente atendente = new Atendente();
+            atendente.setNome("Atendente Padrão");
+            atendente.setEmail("atendente@raizes.com");
+            atendente.setSenha(passwordEncoder.encode("123456"));
+            atendente.setTelefone("81999997777");
+            atendente.setTipo(TipoUsuario.ATENDENTE);
+            atendente.setDataCadastro(LocalDateTime.now());
+            atendente.setAtivo(true);
+            usuarioRepository.save(atendente);
+        }
     }
 }
