@@ -4,25 +4,84 @@
  */
 package com.raizes.raizes_backend.infrastructure.config;
 
-import com.raizes.raizes_backend.domain.entity.Gerente;
-import com.raizes.raizes_backend.domain.repository.ProdutoRepository;
-import com.raizes.raizes_backend.domain.repository.UnidadeRepository;
-import com.raizes.raizes_backend.domain.repository.UsuarioRepository;
+import com.raizes.raizes_backend.domain.entity.*;
+import com.raizes.raizes_backend.domain.enums.TipoUsuario;
+import com.raizes.raizes_backend.domain.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import java.time.LocalDateTime;
 
 @Component
 public class DataLoader implements CommandLineRunner{
-    @Autowired private UsuarioRepository usuarioRepo;
-    @Autowired private UnidadeRepository unidadeRepo;
-    @Autowired private ProdutoRepository produtoRepo;
-    //@Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired private UnidadeRepository unidadeRepository;
+    @Autowired private ProdutoRepository produtoRepository;
+    @Autowired private EstoqueRepository estoqueRepository;
+    @Autowired private PasswordEncoder passwordEncoder;
     
      @Override
     public void run(String... args) throws Exception {
-        // Criar um gerente admin
-        // Criar uma unidade exemplo
-        // Criar alguns produtos ("Baião de Dois", "Tapioca", "Cuscuz")
+        // Criar gerente admin se não existir
+        if (usuarioRepository.findByEmail("gerente@raizes.com").isEmpty()) {
+            Gerente gerente = new Gerente();
+            gerente.setNome("Gerente Geral");
+            gerente.setEmail("gerente@raizes.com");
+            gerente.setSenha(passwordEncoder.encode("admin123"));
+            gerente.setTelefone("81999999999");
+            gerente.setTipo(TipoUsuario.GERENTE);
+            gerente.setDataCadastro(LocalDateTime.now());
+            gerente.setAtivo(true);
+            usuarioRepository.save(gerente);
+        }
+
+        // Criar unidade exemplo
+        Unidade unidade = null;
+        if (unidadeRepository.count() == 0) {
+            unidade = new Unidade();
+            unidade.setNome("Unidade Centro - Recife");
+            unidade.setEndereco("Rua da Aurora, 123, Recife/PE");
+            unidade.setHorarioFuncionamento("08:00 às 22:00");
+            unidade.setAtiva(true);
+            // buscar gerente existente
+            Usuario gerente = usuarioRepository.findByEmail("gerente@raizes.com").orElse(null);
+            unidade.setGerente(gerente);
+            unidade = unidadeRepository.save(unidade);
+        } else {
+            unidade = unidadeRepository.findAll().get(0);
+        }
+
+        // Criar produtos
+        if (produtoRepository.count() == 0) {
+            Produto p1 = new Produto();
+            p1.setNome("Baião de Dois");
+            p1.setDescricao("Arroz, feijão verde, queijo coalho, carne de sol");
+            p1.setPrecoBase(39.90);
+            produtoRepository.save(p1);
+
+            Produto p2 = new Produto();
+            p2.setNome("Tapioca de Carne de Sol");
+            p2.setDescricao("Tapioca recheada com carne de sol e queijo");
+            p2.setPrecoBase(24.90);
+            produtoRepository.save(p2);
+
+            Produto p3 = new Produto();
+            p3.setNome("Cuscuz com Ovo");
+            p3.setDescricao("Cuscuz nordestino com ovo frito e manteiga");
+            p3.setPrecoBase(18.90);
+            produtoRepository.save(p3);
+        }
+
+        // Criar estoque inicial para a unidade
+        if (estoqueRepository.count() == 0 && unidade != null) {
+            for (Produto p : produtoRepository.findAll()) {
+                Estoque e = new Estoque();
+                e.setUnidade(unidade);
+                e.setProduto(p);
+                e.setQuantidade(50); // estoque inicial
+                estoqueRepository.save(e);
+            }
+        }
     }
 }
