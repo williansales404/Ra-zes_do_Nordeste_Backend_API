@@ -5,8 +5,8 @@
 package com.raizes.raizes_backend.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.raizes.raizes_backend.domain.entity.Produto;
+import com.raizes.raizes_backend.domain.entity.Promocao;
 
-public interface ProdutoRepository extends JpaRepository<Produto, Long> {
+public interface PromocaoRepository extends JpaRepository<Promocao, Long> {
     
 }

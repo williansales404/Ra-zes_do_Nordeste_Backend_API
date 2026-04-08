@@ -4,9 +4,11 @@
  */
 package com.raizes.raizes_backend.domain.repository;
 
+import com.raizes.raizes_backend.domain.entity.Consentimento;
+import com.raizes.raizes_backend.domain.entity.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.raizes.raizes_backend.domain.entity.Produto;
+import java.util.Optional;
 
-public interface ProdutoRepository extends JpaRepository<Produto, Long> {
-    
+public interface ConsentimentoRepository extends JpaRepository<Consentimento, Long> {
+    Optional<Consentimento> findByClienteAndAtivoTrue(Cliente cliente);
 }

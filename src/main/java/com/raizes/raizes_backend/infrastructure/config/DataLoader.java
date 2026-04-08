@@ -4,6 +4,7 @@
  */
 package com.raizes.raizes_backend.infrastructure.config;
 
+import com.raizes.raizes_backend.domain.entity.Gerente;
 import com.raizes.raizes_backend.domain.repository.ProdutoRepository;
 import com.raizes.raizes_backend.domain.repository.UnidadeRepository;
 import com.raizes.raizes_backend.domain.repository.UsuarioRepository;
