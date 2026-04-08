@@ -21,7 +21,7 @@ API para gerenciamento da rede de lanchonetes Raízes do Nordeste.
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seuusuario/raizes-backend.git
+   git clone https://github.com/williansales404/Ra-zes_do_Nordeste_Backend_API.git
    cd raizes-backend
    
 2. Execute a aplicação:
