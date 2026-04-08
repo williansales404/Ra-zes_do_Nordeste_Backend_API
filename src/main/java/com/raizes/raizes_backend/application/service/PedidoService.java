@@ -22,14 +22,10 @@ import jakarta.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service
 public class PedidoService {
 
-    private static final Logger log = LoggerFactory.getLogger(PedidoService.class);
-    
     @Autowired
     private PedidoRepository pedidoRepository;
 
@@ -75,6 +71,8 @@ public class PedidoService {
         for (ItemPedidoRequestDTO item : itensDTO) {
             Produto produto = produtoService.buscarPorId(item.getProdutoId());
             produtosQuantidades.put(produto.getId(), item.getQuantidade());
+            // Buscar preço personalizado do cardápio (simplificado: usar precoBase)
+            // Idealmente consultar ItemCardapio, mas por enquanto usamos precoBase
             precos.put(produto.getId(), produto.getPrecoBase());
         }
 
@@ -145,9 +143,6 @@ public class PedidoService {
         // Salvar pagamento (já associado)
         pagamentoRepository.save(pagamento);
 
-        log.info("Pedido criado: id={}, cliente={}, canal={}, valorTotal={}",
-             pedido.getId(), cliente.getEmail(), pedido.getCanal(), pedido.getValorTotal());
-        
         return pedidoRepository.save(pedido);
     }
 
@@ -224,16 +219,11 @@ public class PedidoService {
                 throw new RuntimeException("Transição de status não suportada");
         }
 
-        StatusPedido statusAntigo = atual;
-        
         pedido.setStatus(novoStatus);
-        log.info("Status do pedido {} alterado de {} para {} por {}",
-             pedidoId, statusAntigo, novoStatus, papelUsuario);
-        
         return pedidoRepository.save(pedido);
     }
 
-    // Cancelar pedido
+    // Cancelar pedido (método conveniente)
     @Transactional
     public void cancelarPedido(Long pedidoId, String papelUsuario) {
         Pedido pedido = buscarPorId(pedidoId);
@@ -243,8 +233,9 @@ public class PedidoService {
         atualizarStatus(pedidoId, StatusPedido.CANCELADO, papelUsuario);
     }
 
-    // Método auxiliar para obter ID do usuário atual 
+    // Método auxiliar para obter ID do usuário atual (será implementado via SecurityContext)
     private Long getCurrentUserId() {
-        return 0L;
+        // Implementar com SecurityContextHolder
+        return 0L; // placeholder
     }
 }

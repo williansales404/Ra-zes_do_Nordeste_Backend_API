@@ -14,14 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service
 public class EstoqueService {
 
-    private static final Logger log = LoggerFactory.getLogger(EstoqueService.class);
-    
     @Autowired
     private EstoqueRepository estoqueRepository;
 
@@ -65,7 +61,7 @@ public class EstoqueService {
         return estoqueRepository.save(estoque);
     }
 
-    // ========== MÉTODOS PARA VALIDAÇÃO E RESERVA ==========
+    // ========== MÉTODOS PARA VALIDAÇÃO E RESERVA (usados no Commit 7) ==========
 
     /**
      * Verifica se todos os itens de um pedido estão disponíveis no estoque da unidade.
@@ -104,8 +100,6 @@ public class EstoqueService {
             Estoque estoque = estoqueRepository.findByUnidadeAndProduto(unidade, produto)
                     .orElseThrow(() -> new RuntimeException("Produto não encontrado no estoque da unidade"));
             estoque.setQuantidade(estoque.getQuantidade() - quantidade);
-            log.info("Estoque reservado: unidadeId={}, produtoId={}, quantidade={}",
-                    unidadeId, produto.getId(), quantidade);
             estoqueRepository.save(estoque);
         }
     }
@@ -125,8 +119,6 @@ public class EstoqueService {
             Estoque estoque = estoqueRepository.findByUnidadeAndProduto(unidade, produto)
                     .orElseThrow(() -> new RuntimeException("Produto não encontrado no estoque da unidade"));
             estoque.setQuantidade(estoque.getQuantidade() + quantidade);
-            log.info("Reversao de Estoque: unidadeId={}, produtoId={}, quantidade={}",
-                    unidadeId, produto.getId(), quantidade);
             estoqueRepository.save(estoque);
         }
     }

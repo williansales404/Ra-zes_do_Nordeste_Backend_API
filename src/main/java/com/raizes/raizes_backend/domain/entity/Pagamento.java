@@ -10,7 +10,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 
@@ -26,7 +25,6 @@ public class Pagamento {
     private String transacaoId;
     
     @OneToOne
-    @JoinColumn(name = "pedido_id")
     private Pedido pedido;
     
     public Pagamento() {}

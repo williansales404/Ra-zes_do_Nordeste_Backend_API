@@ -10,13 +10,11 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,22 +24,16 @@ public class Pedido {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime dataCriacao;
-    
     @Enumerated(EnumType.STRING)
     private StatusPedido status;
-    
     @Enumerated(EnumType.STRING)
     private CanalPedido canal;
     private Double valorTotal;
     
     @ManyToOne
-    private Cliente cliente;
-    
+    private Cliente cliente;      // diagrama mostra Usuario, mas semanticamente é Cliente
     @ManyToOne
     private Unidade unidade;
-    
-    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Pagamento pagamento;
     
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemPedido> itens = new ArrayList<>();
@@ -89,6 +81,5 @@ public class Pedido {
     public void setUnidade(Unidade unidade) { this.unidade = unidade; }
     public List<ItemPedido> getItens() { return itens; }
     public void setItens(List<ItemPedido> itens) { this.itens = itens; }
-    public Pagamento getPagamento() { return pagamento; }
-    public void setPagamento(Pagamento pagamento) { this.pagamento = pagamento; }
+    
 }

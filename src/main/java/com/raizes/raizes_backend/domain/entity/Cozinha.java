@@ -9,9 +9,5 @@ import jakarta.persistence.Entity;
 
 @Entity @DiscriminatorValue("COZINHA")
 public class Cozinha extends Usuario {
-
-    public Cozinha() {
-        super();
-    }
     
 }

@@ -44,14 +44,13 @@ public abstract class Usuario {
         this.dataCadastro = LocalDateTime.now();
     }
 
-    public Usuario(Long id, String email, String senha, String nome, String telefone, LocalDateTime dataCadastro, TipoUsuario tipo) {
+    public Usuario(Long id, String email, String senha, String nome, String telefone, LocalDateTime dataCadastro) {
         this.id = id;
         this.email = email;
         this.senha = senha;
         this.nome = nome;
         this.telefone = telefone;
         this.dataCadastro = dataCadastro;
-        this.tipo = tipo;
     }
 
     public Long getId() {
