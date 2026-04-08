@@ -52,6 +52,20 @@ public class DataLoader implements CommandLineRunner{
             unidade = unidadeRepository.findAll().get(0);
         }
 
+        //Criação de Cliente para testes
+        if (usuarioRepository.findByEmail("cliente@email.com").isEmpty()) {
+            Cliente cliente = new Cliente();
+            cliente.setNome("Cliente Teste");
+            cliente.setEmail("cliente@email.com");
+            cliente.setSenha(passwordEncoder.encode("123456"));
+            cliente.setTelefone("81988887777");
+            cliente.setTipo(TipoUsuario.CLIENTE);
+            cliente.setDataCadastro(LocalDateTime.now());
+            cliente.setAtivo(true);
+            cliente.setPontos(100); // pontos iniciais para teste
+            usuarioRepository.save(cliente);
+        }
+
         // Criar produtos
         if (produtoRepository.count() == 0) {
             Produto p1 = new Produto();
