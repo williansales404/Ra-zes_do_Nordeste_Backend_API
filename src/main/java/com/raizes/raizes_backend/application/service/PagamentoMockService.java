@@ -15,9 +15,7 @@ public class PagamentoMockService {
      * Simula processamento de pagamento.
      * Regras:
      * - Aprovado se o valor total não for zero.
-     * - Recusado se o valor total for múltiplo de 100 (apenas para teste, você pode ajustar).
-     * - Recusado se o ID do pedido (simulado) for ímpar? Vamos usar uma regra simples:
-     *   Aprovado para valores ímpares, recusado para pares (apenas para demonstração).
+     * - Recusado se o valor total for múltiplo de 100.
      * @param valorTotal valor do pedido
      * @param metodo forma de pagamento (sempre "MOCK")
      * @return StatusPagamento.APROVADO ou RECUSADO

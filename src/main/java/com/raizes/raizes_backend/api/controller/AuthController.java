@@ -26,11 +26,15 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
+    
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -73,6 +77,10 @@ public class AuthController {
                 usuario.getNome(),
                 usuario.getTipo().name()
         );
+        
+        log.info("Login bem-sucedido! usuarioId={}, nome={} '{}'",
+                usuario.getId(), usuario.getNome(), usuario.getTipo().name());
+        
         return ResponseEntity.ok(response);
     }
 
